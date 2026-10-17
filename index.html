@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Happy Birthday, Chelsa Jo Agatha</title>
+  
+  <!-- SKRIP PROTEKSI INSTAN -->
+  <script>
+    if (sessionStorage.getItem('unlocked') !== 'true') {
+      window.location.replace("lock.html");
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body style="display: none;" id="main-body">
+
+  <!-- Top Navigation Bar -->
+  <div class="top-nav">
+    <a href="memories.html" class="nav-btn">📸 Kenangan</a>
+    <button class="icon-btn" onclick="toggleTheme()"><span id="theme-icon">🌙</span></button>
+  </div>
+
+  <div class="app-card">
+    <div class="avatar-container">
+      <img src="joee.png" class="avatar-img" alt="Birthday Girl" loading="eager">
+    </div>
+
+    <h1 class="title-serif">Happy Birthday,<br><i style="color: var(--accent-pink);">Chelsa Jo Agatha</i> ✨</h1>
+    <p class="subtitle">Dibacaaa yaaaaaa!!!</p>
+
+    <!-- Ucapan Kata-Kata -->
+    <div class="wishes-card">
+      <p>Haiiii joeee.. camat ultahh yaa, camat tambah dewasaaa, camat bertambah usia, and always happy for u.. always stay healthy, and always be happy .. and your wishes always came true.. semoga panjang umurr, sehat selalu, dilancarkan rezekinya, dan dimudahkan segala urusannya. Doa yang terbaik yaa, selalu jadi chelsa yang kuat, dan selalu bahagia.. Jangan pernah tumbang akan segala hal, juga selalu jadi kebanggaan mama and papamu. Makasih udah pernah baik banget sama gue, makasih udah jadi temen yang baik atau kata anak kelas aja (justfriend) yang baik😭 wkwkw, candaaaaa... jujurr maaf karna terlalu effort bikin web ini sama ngasih kado kaya gitu, i knoww gue bukan siapa siapa elu tapi entah kenapa mungkin lu mikirr gue seeffort ini yaa, gue hanya membalas kebaikan lu selama ini joee, tapi jujur dulu gue pernah kagum sekilas, dari awal kenal sampe sekarang yang gue liat lu baik, lu selalu nolong orang termasuk gue, joe yang baik, joe yang cengeng, joe yang gue kenal, joe yang takut cicak, joe yang selera musiknya hampir setengah mirip sama selera gue, joe yang selalu ngambek, pokoknya tengil dan ngeselin sih, tapi amann wwkkwk, cuma gue selalu mikir aja pas dicerna dan dipikir kedepannya, mungkin emang gabisaa juga dan siapa juga yang mau modelan manusia kaya gue yang banyak kurangnya ini yakann.. Tapi gue tetep bakal jadi teman yang baik aja takutnya lu risih juga klo berlebihan ginii, maaf yaaaa.. dan makasih udah jadi temen baik gue.. sama satu lagi terakhir inimah.. JANGAN LU SS INI WOK, GUE MALU SOALNYA WKWKWK.. ya semoga lu kedepannya sukses selalu yhh, selalu dimudahkan segala rezeki dan urusannya.. always be happy joe.. Oiya jangan lupa liat di kanan atas buat pencet Kenangan yaa dan ada mode gelap jugaa.</p>
+    </div>
+
+    <!-- FITUR TAMBAHAN: Tombol Pesan Rahasia & Confetti Ulang -->
+    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 25px;">
+      <button class="nav-btn" onclick="showSecretMessage()" style="background: var(--accent-glow); border-color: var(--accent-pink);">💌 Pesan Kecil</button>
+      <button class="nav-btn" onclick="fireMoreConfetti()">🎉 Lempar Bunga</button>
+    </div>
+
+    <!-- FOOTER COPYRIGHT BY RAIHAN -->
+    <footer style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--surface-border); font-size: 0.8rem; color: var(--text-sub);">
+      Made with 💖 for Chelsa Jo Agatha<br>
+      <span style="font-weight: 600; color: var(--accent-pink); letter-spacing: 0.5px;">Copyright © 2026 by Raihan</span>
+    </footer>
+  </div>
+
+  <!-- MODAL PESAN RAHASIA -->
+  <div class="modal-overlay" id="secret-modal" onclick="closeSecretMessage(event)">
+    <div class="modal-card">
+      <div class="modal-icon">🌸</div>
+      <h3 class="modal-title">Satu Hal Lagi...</h3>
+      <p class="modal-text">Jangan lupa senyum hari ini yaa Joe! Apapun yang terjadi hari ini, <i>you're doing great as always</i>. ✨</p>
+      <button class="btn-primary" onclick="closeSecretMessage()">Siap, Makasih! 🥰</button>
+    </div>
+  </div>
+
+  <!-- Floating Audio Player -->
+  <div class="audio-player-float">
+    <button class="play-btn-circle" onclick="toggleAudio()">
+      <span id="play-icon">⏸</span>
+    </button>
+    <div class="track-info">
+      <span class="track-title">Just The Way You Are</span>
+      <span class="track-artist">Bruno Mars</span>
+    </div>
+  </div>
+
+  <!-- Source Audio -->
+  <audio id="bg-audio" loop src="justthewayyouare.mp3"></audio>
+
+  <script src="script.js"></script>
+  <script>
+    if (sessionStorage.getItem('unlocked') === 'true') {
+      document.getElementById('main-body').style.display = 'flex';
+    }
+
+    function showSecretMessage() {
+      document.getElementById('secret-modal').classList.add('active');
+    }
+
+    function closeSecretMessage(e) {
+      if (!e || e.target.classList.contains('modal-overlay') || e.target.tagName === 'BUTTON') {
+        document.getElementById('secret-modal').classList.remove('active');
+      }
+    }
+
+    function fireMoreConfetti() {
+      confetti({
+        particleCount: 80,
+        spread: 80,
+        origin: { y: 0.6 },
+        colors: ['#e07a93', '#d4af37', '#ffffff']
+      });
+    }
+
+    window.addEventListener('load', () => {
+      fireMoreConfetti();
+    });
+  </script>
+</body>
+</html>
