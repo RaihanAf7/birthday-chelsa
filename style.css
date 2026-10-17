@@ -1,0 +1,682 @@
+/* =========================================================
+   VARIABLES & THEME SYSTEM
+   ========================================================= */
+:root {
+  /* Light Theme (Pink Luxury Soft & Warm) */
+  --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #f4e3eb 50%, #eee3e7 100%);
+  --surface: rgba(255, 255, 255, 0.75);
+  --surface-border: rgba(230, 180, 205, 0.4);
+  --text-main: #2d1e27;
+  --text-sub: #7a5e6d;
+  --accent-pink: #e07a93;
+  --accent-glow: rgba(224, 122, 147, 0.25);
+  --accent-gold: #d4af37;
+  --card-shadow: 0 16px 40px -10px rgba(180, 130, 155, 0.2);
+}
+
+[data-theme="dark"] {
+  /* Dark Theme (Deep Midnight Rose & Gold) */
+  --bg-gradient: linear-gradient(135deg, #180d14 0%, #291220 50%, #1c0e18 100%);
+  --surface: rgba(35, 20, 29, 0.7);
+  --surface-border: rgba(255, 180, 210, 0.12);
+  --text-main: #fceef3;
+  --text-sub: #cfa8ba;
+  --accent-pink: #f293a8;
+  --accent-glow: rgba(242, 147, 168, 0.3);
+  --accent-gold: #f3ce70;
+  --card-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6);
+}
+
+/* =========================================================
+   RESET & BASE STYLES
+   ========================================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  transition: background 0.4s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body {
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Background Canvas Particle */
+#bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Floating Controls (Top Right Bar) */
+.top-nav {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  display: flex;
+  gap: 10px;
+}
+
+.icon-btn {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  backdrop-filter: blur(12px);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-main);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.icon-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-pink);
+}
+
+/* =========================================================
+   GLASS CARD CONTAINER
+   ========================================================= */
+.app-card {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 520px;
+  background: var(--surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--surface-border);
+  border-radius: 32px;
+  padding: 40px 30px;
+  box-shadow: var(--card-shadow);
+  text-align: center;
+}
+
+/* Typography */
+h1.title-serif {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.6rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 8px;
+  color: var(--text-main);
+}
+
+p.subtitle {
+  color: var(--text-sub);
+  font-size: 0.95rem;
+  font-weight: 400;
+  margin-bottom: 24px;
+}
+
+/* =========================================================
+   PIN / LOCK SCREEN STYLES
+   ========================================================= */
+.pin-display {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 25px 0 35px;
+}
+
+.pin-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-pink);
+  transition: all 0.2s ease;
+}
+
+.pin-dot.filled {
+  background: var(--accent-pink);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+.num-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--surface-border);
+  color: var(--text-main);
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 16px 0;
+  border-radius: 18px;
+  cursor: pointer;
+}
+
+.num-btn:active {
+  transform: scale(0.95);
+  background: var(--accent-glow);
+}
+
+/* Error Shake Animation */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+.shake { animation: shake 0.4s ease-in-out; }
+
+/* =========================================================
+   COUNTDOWN TIMER STYLES
+   ========================================================= */
+.timer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 30px 0;
+}
+
+.time-box {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--surface-border);
+  padding: 16px 8px;
+  border-radius: 18px;
+}
+
+.time-box .num {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--accent-pink);
+  display: block;
+}
+
+.time-box .label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-sub);
+  margin-top: 4px;
+}
+
+/* =========================================================
+   MAIN BIRTHDAY CONTENT & GALLERY
+   ========================================================= */
+.avatar-container {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 20px;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--accent-pink);
+}
+
+.wishes-card {
+  background: rgba(0,0,0,0.03);
+  border: 1px solid var(--surface-border);
+  border-radius: 20px;
+  padding: 22px;
+  text-align: left;
+  line-height: 1.7;
+  font-size: 0.95rem;
+  margin: 20px 0;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(135deg, var(--accent-pink) 0%, #d4637c 100%);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 25px var(--accent-glow);
+}
+
+.btn-primary:hover {
+  opacity: 0.95;
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   FLOATING AUDIO PLAYER (Pojok Kanan Bawah)
+   ========================================================= */
+.audio-player-float {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--surface-border);
+  border-radius: 50px;
+  padding: 8px 18px 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: var(--card-shadow);
+}
+
+.play-btn-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent-pink);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.track-info {
+  text-align: left;
+}
+
+.track-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-main);
+  display: block;
+}
+
+.track-artist {
+  font-size: 0.72rem;
+  color: var(--text-sub);
+}
+
+/* =========================================================
+   MODAL / NOTIFICATION POPUP
+   ========================================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: 28px;
+  padding: 32px 24px;
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+  transform: scale(0.85);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-overlay.active .modal-card {
+  transform: scale(1);
+}
+
+.modal-icon {
+  font-size: 2.8rem;
+  margin-bottom: 12px;
+}
+
+.modal-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--text-main);
+}
+
+.modal-text {
+  font-size: 0.9rem;
+  color: var(--text-sub);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+/* =========================================================
+   NAVBAR & BUTTON STYLES
+   ========================================================= */
+.nav-btn {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  backdrop-filter: blur(12px);
+  padding: 8px 18px;
+  border-radius: 50px;
+  color: var(--text-main);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-pink);
+  color: var(--accent-pink);
+}
+
+/* =========================================================
+   GALLERY COLLAGE GRID
+   ========================================================= */
+.memory-card-wide {
+  max-width: 680px; /* Diperlebar khusus halaman galeri */
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.gallery-item {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.08);
+}
+
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(2px);
+}
+
+.gallery-item:hover .gallery-overlay {
+  opacity: 1;
+}
+
+/* =========================================================
+   LIGHTBOX FULL ZOOM MODAL
+   ========================================================= */
+.lightbox-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.lightbox-modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lightbox-content {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 16px;
+  object-fit: contain;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  transform: scale(0.9);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.lightbox-modal.active .lightbox-content {
+  transform: scale(1);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  color: white;
+  font-size: 2.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 2001;
+}
+
+/* =========================================================
+   VIDEO ITEM & BADGE STYLES
+   ========================================================= */
+.gallery-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none; /* Agar klik langsung mengenai kartu parent */
+}
+
+.video-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  z-index: 2;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.lightbox-content video {
+  max-width: 90vw;
+  max-height: 80vh;
+  border-radius: 16px;
+  outline: none;
+}
+
+/* =========================================================
+   MOBILE RESPONSIVE (KHUSUS LAYAR HP CHROME & SAFARI)
+   ========================================================= */
+@media (max-width: 480px) {
+  body {
+    padding: 12px; /* Margin luar diperkecil agar pas di HP */
+    align-items: flex-start; /* Menghindari kartu terpotong di HP berlayar pendek */
+    padding-top: 60px; /* Ruang untuk top navigation */
+  }
+
+  /* Kartu Utama Pas Layar */
+  .app-card {
+    padding: 28px 18px;
+    border-radius: 24px;
+    max-width: 100%;
+  }
+
+  /* Khusus Halaman Kenangan di HP */
+  .memory-card-wide {
+    padding: 24px 14px;
+  }
+
+  /* Ukuran Judul di HP */
+  h1.title-serif {
+    font-size: 2.1rem;
+  }
+
+  /* Responsif Numpad PIN (Kunci) agar tidak terlalu besar */
+  .numpad {
+    gap: 8px;
+    max-width: 240px;
+  }
+
+  .num-btn {
+    padding: 12px 0;
+    font-size: 1.1rem;
+    border-radius: 14px;
+  }
+
+  /* Grid Timer Countdown Pas 4 Kolom di HP */
+  .timer-grid {
+    gap: 6px;
+  }
+
+  .time-box {
+    padding: 10px 4px;
+    border-radius: 12px;
+  }
+
+  .time-box .num {
+    font-size: 1.3rem;
+  }
+
+  .time-box .label {
+    font-size: 0.65rem;
+  }
+
+  /* Grid Foto & Video Kenangan (2 Kolom Rapi di HP) */
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  /* Floating Audio Player Diperkecil Sedikit di HP */
+  .audio-player-float {
+    bottom: 16px;
+    right: 16px;
+    padding: 6px 14px 6px 8px;
+  }
+
+  .play-btn-circle {
+    width: 34px;
+    height: 34px;
+  }
+
+  .track-title {
+    font-size: 0.75rem;
+  }
+
+  .track-artist {
+    font-size: 0.65rem;
+  }
+}
+
+/* =========================================================
+   DYNAMIC MASONRY GRID (Rapi, Rapat, Ada Besar & Kecil)
+   ========================================================= */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  grid-auto-flow: dense; /* MENCEGAH BOLONG: Otomatis mengisi ruang kosong di atasnya */
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.gallery-item {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+}
+
+.gallery-item img,
+.gallery-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-item:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 8px 25px var(--accent-glow);
+  z-index: 5;
+}
+
+/* Variasi Ukuran Elegan (Tanpa Membuat Grid Pecah) */
+.grid-wide {
+  grid-column: span 2;
+  aspect-ratio: 2 / 1; /* Persegi Panjang Horizontal */
+}
+
+.grid-tall {
+  grid-row: span 2;
+  aspect-ratio: 1 / 2; /* Persegi Panjang Vertikal */
+}
+
+.grid-big {
+  grid-column: span 2;
+  grid-row: span 2;
+  aspect-ratio: 1 / 1; /* Kotak Besar 2x2 */
+}
+
+/* Responsif Rapi di Layar HP */
+@media (max-width: 480px) {
+  .gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .gallery-item {
+    border-radius: 10px;
+  }
+}
