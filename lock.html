@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Restricted Access</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="center-locked-page">
+
+  <!-- Top Right Navigation Bar -->
+  <div class="top-nav">
+    <button class="icon-btn" onclick="toggleTheme()"><span id="theme-icon">🌙</span></button>
+  </div>
+
+  <div class="app-card">
+    <h1 class="title-serif">Security Lock</h1>
+    <p class="subtitle">Masukkan 6 digit PIN rahasia untuk membuka.</p>
+
+    <!-- Display 6 PIN Dots -->
+    <div class="pin-display">
+      <div class="pin-dot"></div>
+      <div class="pin-dot"></div>
+      <div class="pin-dot"></div>
+      <div class="pin-dot"></div>
+      <div class="pin-dot"></div>
+      <div class="pin-dot"></div>
+    </div>
+
+    <!-- Numeric Keypad -->
+    <div class="numpad">
+      <button class="num-btn" onclick="pressNum('1')">1</button>
+      <button class="num-btn" onclick="pressNum('2')">2</button>
+      <button class="num-btn" onclick="pressNum('3')">3</button>
+      <button class="num-btn" onclick="pressNum('4')">4</button>
+      <button class="num-btn" onclick="pressNum('5')">5</button>
+      <button class="num-btn" onclick="pressNum('6')">6</button>
+      <button class="num-btn" onclick="pressNum('7')">7</button>
+      <button class="num-btn" onclick="pressNum('8')">8</button>
+      <button class="num-btn" onclick="pressNum('9')">9</button>
+      <button class="num-btn" onclick="clearPin()">C</button>
+      <button class="num-btn" onclick="pressNum('0')">0</button>
+      <button class="num-btn" onclick="verifyPin()">➔</button>
+    </div>
+
+    <footer style="margin-top: 15px; font-size: 0.75rem; color: var(--text-sub);">
+      Protected Security Access
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
