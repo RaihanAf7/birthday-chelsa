@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Counting Down...</title>
+  
+  <script>
+    if (sessionStorage.getItem('unlocked') !== 'true') {
+      window.location.replace("lock.html");
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- CSS TAMBAHAN UNTUK LAYAR INTRO CINEMATIC -->
+  <style>
+    .intro-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      background: radial-gradient(circle at 50% 50%, #2b1b24 0%, #12070f 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+
+    .intro-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .intro-content {
+      transform: scale(0.85);
+      animation: none;
+    }
+
+    .intro-overlay.active .intro-content {
+      animation: introZoomIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes introZoomIn {
+      0% { opacity: 0; transform: scale(0.7) translateY(20px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .intro-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      color: #ffb6c1;
+      margin-bottom: 12px;
+      text-shadow: 0 4px 20px rgba(255, 182, 193, 0.4);
+    }
+
+    .intro-subtitle {
+      color: #e2c2d2;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+      animation: pulseText 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseText {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    .sparkle-icon {
+      font-size: 3.5rem;
+      margin-bottom: 16px;
+      animation: floatIcon 3s ease-in-out infinite;
+    }
+
+    @keyframes floatIcon {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(10deg); }
+    }
+  </style>
+</head>
+<body class="center-locked-page">
+
+  <div class="top-nav">
+    <button class="nav-btn" onclick="relockPage()">🔒 Kembali ke Lock</button>
+    <button class="icon-btn" onclick="toggleTheme()"><span id="theme-icon">🌙</span></button>
+  </div>
+
+  <div class="app-card">
+    <h1 class="title-serif">Something Special Is Coming</h1>
+    <p class="subtitle">Hitung mundur menuju hari ulang tahunmu.</p>
+
+    <!-- Timer Grid -->
+    <div class="timer-grid">
+      <div class="time-box"><span class="num" id="days">00</span><span class="label">Hari</span></div>
+      <div class="time-box"><span class="num" id="hours">00</span><span class="label">Jam</span></div>
+      <div class="time-box"><span class="num" id="minutes">00</span><span class="label">Menit</span></div>
+      <div class="time-box"><span class="num" id="seconds">00</span><span class="label">Detik</span></div>
+    </div>
+
+    <!-- Tombol Akses Halaman Utama -->
+    <button class="btn-primary" id="open-btn" onclick="handleOpenClick()">
+      ✨ Buka Kejutan
+    </button>
+  </div>
+
+  <!-- Modal / Pop-up Notifikasi Belum Waktunya -->
+  <div class="notice-modal-overlay" id="notice-modal" onclick="closeModal(event)">
+    <div class="notice-modal-card">
+      <div style="font-size: 2.8rem; margin-bottom: 10px;">⏳</div>
+      <h3 style="font-size: 1.3rem; font-weight: 600; color: var(--accent-pink); margin-bottom: 8px;">Belum Waktunya!</h3>
+      <p style="font-size: 0.9rem; color: var(--text-sub); line-height: 1.5; margin-bottom: 20px;">
+        Sabar yaa... Kejutan ini baru bisa dibuka pada tanggal <strong>19 Oktober 2026</strong>. Tunggu sampai hitungan mundurnya selesai! ✨
+      </p>
+      <button class="btn-primary" onclick="closeModal()">Okee</button>
+    </div>
+  </div>
+
+  <!-- LAYAR INTRO CINEMATIC (MUNCUL SAAT KLIK BUKA KEJUTAN) -->
+  <div class="intro-overlay" id="intro-screen">
+    <div class="intro-content">
+      <div class="sparkle-icon">🌸✨</div>
+      <h2 class="intro-title">Mempersiapkan Kejutan...</h2>
+      <p class="intro-subtitle">Menghadirkan sesuatu yang spesial untuk Chelsa Jo Agatha 💖</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    checkAuth();
+    const TARGET_DATE = '2026-10-19T00:00:00';
+    startCountdown(TARGET_DATE);
+
+    // Kustomisasi fungsi handleOpenClick agar menampilkan animasi intro sebelum pindah halaman
+    function handleOpenClick() {
+      const now = new Date().getTime();
+      const isDev = sessionStorage.getItem('dev_bypass') === 'true';
+
+      if (now >= globalTargetTime || isTimeReached || isDev) {
+        // Aktifkan layar intro cinematic
+        const introScreen = document.getElementById('intro-screen');
+        if (introScreen) {
+          introScreen.classList.add('active');
+        }
+
+        // Jalankan efek ledakan kembang api / konfeti mewah saat intro mulai
+        confetti({
+          particleCount: 100,
+          spread: 90,
+          origin: { y: 0.5 },
+          colors: ['#ff4d79', '#ffb6c1', '#d4af37', '#ffffff']
+        });
+
+        // Tandai navigasi dan pindah ke index.html setelah animasi selesai (2.2 detik)
+        setTimeout(() => {
+          isNavigating = true;
+          window.location.href = "index.html";
+        }, 5500);
+
+      } else {
+        showModal();
+      }
+    }
+  </script>
+</body>
+</html>
