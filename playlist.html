@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Our Playlists 🎵</title>
+
+  <!-- SKRIP PROTEKSI INSTAN -->
+  <script>
+    if (sessionStorage.getItem('unlocked') !== 'true') {
+      window.location.replace("lock.html");
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body style="display: none;" id="main-body">
+
+  <!-- Top Fixed Navigation Bar -->
+  <header class="top-nav-fixed">
+    <div class="nav-left">
+      <a href="index.html" class="nav-btn">⬅️ Kembali</a>
+    </div>
+    <div class="nav-right">
+      <button class="icon-btn" onclick="toggleTheme()"><span id="theme-icon">🌙</span></button>
+    </div>
+  </header>
+
+  <!-- Container Konten Utama -->
+  <div class="app-card memory-card-wide">
+    <h1 class="title-serif">Our Playlist</h1>
+    <p class="subtitle">Playlist lagu spesial pilihan Chelsa Jo Agatha.</p>
+
+    <!-- CONTAINER DAFTAR LAGU (TAMPIL OTOMATIS DARI KODE MANUAL) -->
+    <div class="playlists-grid" id="playlists-container">
+      <!-- Widget playlist dimuat otomatis via script di bawah -->
+    </div>
+
+    <!-- FOOTER COPYRIGHT BY RAIHAN -->
+    <footer style="margin-top: 30px; padding-top: 15px; border-top: 1px dashed var(--surface-border); font-size: 0.8rem; color: var(--text-sub); text-align: center;">
+      Made with 💖 for Chelsa Jo Agatha<br>
+      <span style="font-weight: 600; color: var(--accent-pink); letter-spacing: 0.5px;">Copyright © 2026 by Raihan</span>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    if (sessionStorage.getItem('unlocked') === 'true') {
+      document.getElementById('main-body').style.display = 'flex';
+    }
+
+    /* =========================================================
+       PLAYLIST SPESIAL PILIHAN RAIHAN & CHELSA
+       ========================================================= */
+    const DEFAULT_TRACKS = [
+      { type: 'playlist', id: '2IpBaEcc2hZHxP75Ym9AR4' } // Playlist utama Chelsa & Raihan
+    ];
+
+    function renderPlaylists() {
+      const container = document.getElementById('playlists-container');
+      if (!container) return;
+      container.innerHTML = "";
+
+      if (DEFAULT_TRACKS.length === 0) {
+        container.innerHTML = `<p style="color: var(--text-sub); font-size: 0.9rem; grid-column: 1/-1;">Belum ada lagu yang ditambahkan.</p>`;
+        return;
+      }
+
+      DEFAULT_TRACKS.forEach((item) => {
+        const card = document.createElement('div');
+        card.className = 'spotify-embed-card';
+        card.style.cssText = "position: relative; margin-bottom: 20px; background: rgba(255,255,255,0.25); padding: 12px; border-radius: 18px; border: 1px solid var(--surface-border);";
+        
+        // Tinggi otomatis: 380px untuk playlist agar tampil utuh
+        const height = '380px';
+        const spotifyUrl = `https://open.spotify.com/${item.type}/${item.id}`;
+
+        card.innerHTML = `
+          <iframe 
+            style="border-radius:14px; width:100%; height:${height}; border:none;" 
+            src="https://open.spotify.com/embed/${item.type}/${item.id}?utm_source=generator&theme=0" 
+            allowfullscreen="" 
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+            loading="lazy">
+          </iframe>
+          
+          <!-- TOMBOL AGAR BISA DIPUTAR FULL DI APLIKASI SPOTIFY -->
+          <a href="${spotifyUrl}" target="_blank" style="display: block; margin-top: 10px; text-align: center; background: linear-gradient(135deg, var(--accent-pink) 0%, #ff2a5f 100%); color: #fff; padding: 10px; border-radius: 12px; font-weight: 600; text-decoration: none; font-size: 0.85rem; box-shadow: 0 4px 15px var(--accent-glow);">
+            🎧 Putar Full di Aplikasi / Web Spotify
+          </a>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderPlaylists();
+    });
+  </script>
+</body>
+</html>
