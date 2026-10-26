@@ -1,6 +1,6 @@
 # 💖 Chelsa Jo Agatha - Birthday Website ✨
 
-Website spesial bertema luxury pink yang dibuat khusus untuk merayakan ulang tahun Chelsa Jo Agatha pada tanggal 19 Oktober 2026.
+Website spesial bertema luxury pink yang dibuat khusus untuk merayakan ulang tahun Chelsa Jo Agatha
 
 ## 🚀 Live Demo
 Akses website live melalui Vercel: [birthday-chelsa.vercel.app](https://birthday-chelsa.vercel.app)
